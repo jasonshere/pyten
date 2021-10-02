@@ -11,7 +11,7 @@ import pip
 global include_dirs
 include_dirs = []
 
-deps_list = ['numpy', 'scipy', 'pandas']
+deps_list = []
 
 def deps_install():
     for package in deps_list:
@@ -60,5 +60,5 @@ setup(name = "pyten",
       zip_safe = False,         # I need this for MPI purposes
       cmdclass={'install': pyten_install,
                 'develop': pyten_develop},
-      include_dirs=include_dirs, requires=['numpy', 'scipy', 'pandas']
+      include_dirs=include_dirs, requires=[]
       )
