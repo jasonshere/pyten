@@ -49,12 +49,12 @@ class onlineCP(object):
             if len(self.As[n]):
                 AtA[n, :, :] = np.dot(self.As[n].T, self.As[n])
 
-        self.Ps = range(self.ndims - 1)
-        self.Qs = range(self.ndims - 1)
+        self.Ps = list(range(self.ndims - 1))
+        self.Qs = list(range(self.ndims - 1))
         for n in range(self.ndims - 1):
             temp1 = [n]
-            temp2 = range(n)
-            temp3 = range(n + 1, self.ndims)
+            temp2 = list(range(n))
+            temp3 = list(range(n + 1, self.ndims))
             temp2.reverse()
             temp3.reverse()
             temp1[len(temp1):len(temp1)] = temp3
@@ -62,14 +62,14 @@ class onlineCP(object):
             Xn = self.T.permute(temp1)
             Xn = Xn.tondarray()
             Xn = Xn.reshape([Xn.shape[0], Xn.size / Xn.shape[0]])
-            tempAs = range(self.ndims)
+            tempAs = list(range(self.ndims))
             for i in range(self.ndims):
                 tempAs[i] = self.As[i]
             tempAs.pop(n)
             tempAs.reverse()
             self.Ps[n] = Xn.dot(khatrirao(tempAs))
-            temp = range(n)
-            temp[len(temp):len(temp)] = range(n + 1, self.ndims)
+            temp = list(range(n))
+            temp[len(temp):len(temp)] = list(range(n + 1, self.ndims))
             self.Qs[n] = np.prod(AtA[temp, :, :], axis=0)
 
         self.rank = rank
@@ -89,7 +89,7 @@ class onlineCP(object):
                 lefts = [lefts, khatrirao(lefts[n - 1], self.As[self.ndims - n])]
                 rights = [rights, khatrirao(self.As[n], rights[n - 1])]
 
-        self.Ks = range(self.ndims - 1)
+        self.Ks = list(range(self.ndims - 1))
 
         if self.ndims > 3:
             self.Ks[0] = lefts[self.ndims - 3]
@@ -131,7 +131,7 @@ class onlineCP(object):
         KN = khatrirao([self.Ks[0], self.As[0]])
         n = self.ndims - 1
         temp1 = [n]
-        temp2 = range(n)
+        temp2 = list(range(n))
         temp2.reverse()
         temp1[len(temp1):len(temp1)] = temp2
         newXN = newX.permute(temp1)
@@ -142,8 +142,8 @@ class onlineCP(object):
         # update mode 1 to N-1
         for n in range(self.ndims - 1):
             temp1 = [n]
-            temp2 = range(n)
-            temp3 = range(n + 1, self.ndims)
+            temp2 = list(range(n))
+            temp3 = list(range(n + 1, self.ndims))
             temp2.reverse()
             temp3.reverse()
             temp1[len(temp1):len(temp1)] = temp3

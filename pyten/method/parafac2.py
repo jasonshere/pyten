@@ -37,14 +37,14 @@ class PARAFAC2(object):
         self.H = None
         self.S = None
         self.V = None
-        self.fit = range(self.K)
+        self.fit = list(range(self.K))
         self.errList = []
         self.sigma_new = 0
         self.sigma_old = 1e-6
 
     def initialize(self):
         """Random initialization of all decomposition matrices and tensors"""
-        self.U = range(self.K)
+        self.U = list(range(self.K))
         self.H = np.identity(self.rank)
         temp = 0
         self.S = np.zeros([self.rank, self.rank, self.K])
@@ -52,7 +52,7 @@ class PARAFAC2(object):
             self.S[:, :, k] = np.identity(self.rank)
             temp += self.X[k].T.dot(self.X[k])
         [eigval, eigvec] = np.linalg.eig(temp)
-        self.V = eigvec[:, range(self.rank)]
+        self.V = eigvec[:, list(range(self.rank))]
 
     #        for k in range(self.K):
     #            self.normX += np.linalg.norm(self.X[k]) ** 2
@@ -101,11 +101,11 @@ class PARAFAC2(object):
             error = abs(self.sigma_new - self.sigma_old) #/ self.sigma_old
             self.errList.append(error)
             if (i + 1) % self.printitn == 0:
-                print 'PARAFAC2: iterations={0}, difference={1}, fit_difference={2}'.format(i + 1, self.errList[-1],
-                                                                                            self.sigma_new)
+                print('PARAFAC2: iterations={0}, difference={1}, fit_difference={2}'.format(i + 1, self.errList[-1],
+                                                                                            self.sigma_new))
             elif error < self.tol:
-                print 'PARAFAC2: iterations={0}, difference={1}, fit_difference={2}'.format(i + 1, self.errList[-1],
-                                                                                            self.sigma_new)
+                print('PARAFAC2: iterations={0}, difference={1}, fit_difference={2}'.format(i + 1, self.errList[-1],
+                                                                                            self.sigma_new))
 
             if error < self.tol:
                 break

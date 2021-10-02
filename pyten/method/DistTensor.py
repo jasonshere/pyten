@@ -122,7 +122,7 @@ class TensorDecompositionALS(object):
             for elem in zip(block.iIds, block.jIds, block.kIds, block.vals):
                 key = elem[mode]
                 val = elem[3]
-                modes = range(3)
+                modes = list(range(3))
                 indices = [elem[idx] for idx in modes[:mode] + modes[mode+1:]]
                 factors = [factor1[indices[0]], factor2[indices[1]]]
                 newRow = [x[0] * x[1] * val for x in zip(*factors)]
@@ -239,7 +239,7 @@ class TensorDecompositionALS(object):
         sc.setLogLevel('WARN')
         sc.addPyFile("pyten/tools/utils_tensor.py")
 
-        print "TIME - Setting up the Spark: {} sec.".format(time.time() - start_program)
+        print("TIME - Setting up the Spark: {} sec.".format(time.time() - start_program))
 
         # start the timer for processing data
         start_process_data = time.time()
@@ -287,7 +287,7 @@ class TensorDecompositionALS(object):
         # calculate the norm of the observed tensor
         normData = np.sqrt(rawData.map(lambda x: x.val * x.val).sum())
 
-        print "INFO - A tensor of the size {}x{}x{} with {} non-zero elements.".format(self.I, self.J, self.K, self.nnz)
+        print("INFO - A tensor of the size {}x{}x{} with {} non-zero elements.".format(self.I, self.J, self.K, self.nnz))
 
         # initialize the partitioner for each dimension
         iPartitioner = CustomizedPartitioner(self.numIBlocks)
@@ -314,7 +314,7 @@ class TensorDecompositionALS(object):
                               .mapValues(mapValuesFunc)\
                               .persist(self.intermediateRDDStorageLevel)
 
-        print "TIME - Process Raw Tensor Data: {} sec.".format(time.time() - start_process_data)
+        print("TIME - Process Raw Tensor Data: {} sec.".format(time.time() - start_process_data))
 
         # start the timer for the initialization
         start_init = time.time()
@@ -329,7 +329,7 @@ class TensorDecompositionALS(object):
         jFactors = self.initFactors(jOutBlocks)
         kFactors = self.initFactors(kOutBlocks)
 
-        print "TIME - Initial Factor Matrices: {} sec.".format(time.time() - start_init)
+        print("TIME - Initial Factor Matrices: {} sec.".format(time.time() - start_init))
 
         # calculate AtA for dimensions J and K
         jAtA = self.computeAtA(jFactors)
@@ -387,17 +387,17 @@ class TensorDecompositionALS(object):
             # calculate the change of fit comparing with the previous one
             fitchange = abs(fit - fitold)
             fitold = fit
-            print "Iteration {}: error-{}, fit-{} and fitchange-{} with {} seconds".format(iteration, error, fit, fitchange, time.time() - start_inner)
+            print("Iteration {}: error-{}, fit-{} and fitchange-{} with {} seconds".format(iteration, error, fit, fitchange, time.time() - start_inner))
             # stopping criteria
             if fitchange < self.tol:
                 break
 
-            print "TIME - Update Factor Matrices: {} sec. in {} iterations".format(time.time() - start_inner, iteration)
+            print("TIME - Update Factor Matrices: {} sec. in {} iterations".format(time.time() - start_inner, iteration))
 
         self.iFactors = iFactors
         self.jFactors = jFactors
         self.kFactors = kFactors
-        self.Us = range(3)
+        self.Us = list(range(3))
         self.Us[0] = np.zeros([self.I, self.rank])
         self.Us[1] = np.zeros([self.J, self.rank])
         self.Us[2] = np.zeros([self.K, self.rank])
@@ -413,8 +413,8 @@ class TensorDecompositionALS(object):
         self.lambdaVals = lambdaVals
         self.ktensor = pyten.tenclass.Ktensor(self.lambdaVals, self.Us)
 
-        print "TIME - Completeing the whole iterations: {} sec.".format(time.time() - start_iter)
-        print "TIME - Total computation time: {} sec.".format(time.time() - start_program)
+        print("TIME - Completeing the whole iterations: {} sec.".format(time.time() - start_iter))
+        print("TIME - Total computation time: {} sec.".format(time.time() - start_program))
 
 
 if __name__ == "__main__":

@@ -43,7 +43,7 @@ class Tenmat(object):
                 raise ValueError("Tenmat: incorrect specification of dimensions.")
             ##################
 
-            if not (range(0, x.ndims) == sorted(np.append(rdim, cdim))):
+            if not (list(range(0, x.ndims)) == sorted(np.append(rdim, cdim))):
                 raise ValueError("Tenmat: second argument must be a list or an integer.")
 
             self.rowIndices = rdim
@@ -110,9 +110,9 @@ class Tenmat(object):
 
 
 if __name__ == '__main__':
-    X = pyten.tenclass.Tensor(range(1, 25), [3, 2, 2, 2])
-    print X.data[:, :, 0, 0]
+    X = pyten.tenclass.Tensor(list(range(1, 25)), [3, 2, 2, 2])
+    print(X.data[:, :, 0, 0])
     A = Tenmat(X, [1, 2], [4, 3])
-    print A.data
-    print A.totensor().data[:, :, 0, 0]
-    print A.__str__()
+    print(A.data)
+    print(A.totensor().data[:, :, 0, 0])
+    print(A.__str__())

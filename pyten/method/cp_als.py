@@ -30,7 +30,7 @@ def cp_als(y, r=20, omega=None, tol=1e-4, maxiter=100, init='random', printitn=1
     # Extract number of dimensions and norm of X.
     N = X.ndims
     normX = X.norm()
-    dimorder = range(N)  # 'dimorder' - Order to loop through dimensions {0:(ndims(A)-1)}
+    dimorder = list(range(N))  # 'dimorder' - Order to loop through dimensions {0:(ndims(A)-1)}
 
     # Define convergence tolerance & maximum iteration
     fitchangetol = tol
@@ -54,12 +54,12 @@ def cp_als(y, r=20, omega=None, tol=1e-4, maxiter=100, init='random', printitn=1
         # first index in dimorder because that will be solved for in the first
         # inner iteration.
         if init == 'random':
-            Uinit = range(N)
+            Uinit = list(range(N))
             Uinit[0] = []
             for n in dimorder[1:]:
                 Uinit[n] = numpy.random.random([X.shape[n], r])
         elif init == 'nvecs' or init == 'eigs':
-            Uinit = range(N)
+            Uinit = list(range(N))
             Uinit[0] = []
             for n in dimorder[1:]:
                 Uinit[n] = X.nvecs(n, r)  # first r leading eigenvecters
@@ -87,8 +87,8 @@ def cp_als(y, r=20, omega=None, tol=1e-4, maxiter=100, init='random', printitn=1
         for n in range(N):
             # Calculate Unew = X_(n) * khatrirao(all U except n, 'r').
             temp1 = [n]
-            temp2 = range(n)
-            temp3 = range(n + 1, N)
+            temp2 = list(range(n))
+            temp3 = list(range(n + 1, N))
             temp2.reverse()
             temp3.reverse()
             temp1[len(temp1):len(temp1)] = temp3
@@ -102,8 +102,8 @@ def cp_als(y, r=20, omega=None, tol=1e-4, maxiter=100, init='random', printitn=1
             Unew = Xn.dot(khatrirao(tempU))
 
             # Compute the matrix of coefficients for linear system
-            temp = range(n)
-            temp[len(temp):len(temp)] = range(n + 1, N)
+            temp = list(range(n))
+            temp[len(temp):len(temp)] = list(range(n + 1, N))
             y = numpy.prod(UtU[temp, :, :], axis=0)
             Unew = Unew.dot(numpy.linalg.inv(y))
 
@@ -142,9 +142,9 @@ def cp_als(y, r=20, omega=None, tol=1e-4, maxiter=100, init='random', printitn=1
 
         if (printitn != 0 and iter % printitn == 0) or ((printitn > 0) and (flag == 0)):
             if recover == 0:
-                print 'CP_ALS: iterations={0}, f={1}, f-delta={2}'.format(iter, fit, fitchange)
+                print('CP_ALS: iterations={0}, f={1}, f-delta={2}'.format(iter, fit, fitchange))
             else:
-                print 'CP_ALS: iterations={0}, f-delta={1}'.format(iter, fitchange)
+                print('CP_ALS: iterations={0}, f-delta={1}'.format(iter, fitchange))
 
         # Check for convergence
         if flag == 0:

@@ -30,7 +30,7 @@ def tucker_als(y, r=20, omega=None, tol=1e-4, max_iter=100, init='random', print
 
     # Extract number of dimensions and norm of X.
     N = X.ndims
-    dimorder = range(N)  # 'dimorder' - Order to loop through dimensions {0:(ndims(A)-1)}
+    dimorder = list(range(N))  # 'dimorder' - Order to loop through dimensions {0:(ndims(A)-1)}
 
     # Define convergence tolerance & maximum iteration
     fitchangetol = tol
@@ -58,7 +58,7 @@ def tucker_als(y, r=20, omega=None, tol=1e-4, max_iter=100, init='random', print
         # first index in dimorder because that will be solved for in the first
         # inner iteration
         if init == 'random':
-            Uinit = range(N)
+            Uinit = list(range(N))
             Uinit[0] = []
             for n in dimorder[1:]:
                 Uinit[n] = np.random.random([X.shape[n], r[n]])
@@ -66,10 +66,10 @@ def tucker_als(y, r=20, omega=None, tol=1e-4, max_iter=100, init='random', print
             # Compute an orthonormal basis for the dominant
             # Rn-dimensional left singular subspace of
             # X_(n) (0 <= n <= N-1).
-            Uinit = range(N)
+            Uinit = list(range(N))
             Uinit[0] = []
             for n in dimorder[1:]:
-                print('  Computing %d leading e-vectors for factor %d.\n', r, n)
+                print(('  Computing %d leading e-vectors for factor %d.\n', r, n))
                 Uinit[n] = X.nvecs(n, r)  # first r leading eigenvecters
         else:
             raise TypeError('The selected initialization method is not supported')
@@ -101,7 +101,7 @@ def tucker_als(y, r=20, omega=None, tol=1e-4, max_iter=100, init='random', print
         for n in range(N):
             tempU = U[:]
             tempU.pop(n)
-            tempIndex = range(N)
+            tempIndex = list(range(N))
             tempIndex.pop(n)
             Utilde = X
             for k in range(len(tempIndex)):
@@ -136,7 +136,7 @@ def tucker_als(y, r=20, omega=None, tol=1e-4, max_iter=100, init='random', print
 
         # Print inner loop fitting change
         if printitn != 0 and iter % printitn == 0:
-            print ' Tucker_ALS: iterations={0}, fit = {1}, fit-delta = {2}\n'.format(iter, fit, fitchange)
+            print(' Tucker_ALS: iterations={0}, fit = {1}, fit-delta = {2}\n'.format(iter, fit, fitchange))
             # print ' Iter ',iter,': fit = ',fit,'fitdelta = ',fitchange,'\n'
         # Check for convergence
         if (iter > 1) and (fitchange < fitchangetol):

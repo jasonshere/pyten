@@ -1,6 +1,6 @@
 import sys
 sys.path.append('/path/to/pyten/tenclass')
-import sptensor
+from . import sptensor
 import numpy as np
 from pyten.tools import tools
 
@@ -168,7 +168,7 @@ class Tensor(object):
         dim = mode - 1
         n = self.ndims
         shape = list(self.shape)
-        order = [dim] + range(0, dim) + range(dim + 1, n)
+        order = [dim] + list(range(0, dim)) + list(range(dim + 1, n))
         new_data = self.permute(order).data
         new_data = new_data.reshape(shape[dim], tools.prod(shape) / shape[dim])
         if option is None:
@@ -210,7 +210,7 @@ class Tensor(object):
         dim = mode - 1
         n = self.ndims
         shape = list(self.shape)
-        order = [dim] + range(0, dim) + range(dim + 1, n)
+        order = [dim] + list(range(0, dim)) + list(range(dim + 1, n))
         new_data = self.permute(order).data
         new_data = new_data.reshape(shape[dim], tools.prod(shape) / shape[dim])
         new_data = np.dot(vector, new_data)
@@ -230,8 +230,8 @@ class Tensor(object):
             raise ValueError('Tensor/UNFOLD: unfold mode n (int) needs to be specified.')
         N = self.ndims
         temp1 = [n]
-        temp2 = range(n)
-        temp3 = range(n + 1, N)
+        temp2 = list(range(n))
+        temp3 = list(range(n + 1, N))
         temp1[len(temp1):len(temp1)] = temp2
         temp1[len(temp1):len(temp1)] = temp3
         xn = self.permute(temp1)
@@ -247,13 +247,13 @@ class Tensor(object):
             raise ValueError('Tensor/NVECS: the number of eigenvectors r needs to be specified.')
         xn = self.unfold(n)
         [eigen_value, eigen_vector] = np.linalg.eig(xn.dot(xn.transpose()))
-        return eigen_vector[:, range(r)]
+        return eigen_vector[:, list(range(r))]
 
 
 if __name__ == '__main__':
-    X = Tensor(range(1, 25), [2, 4, 3])
+    X = Tensor(list(range(1, 25)), [2, 4, 3])
     V = [[1, 2], [2, 1]]
     Y = X.ttm(V, 1)
-    print Y.data[:, :, 0]
-    print X.__str__()
-    print X.__class__
+    print(Y.data[:, :, 0])
+    print(X.__str__())
+    print(X.__class__)

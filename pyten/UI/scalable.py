@@ -31,11 +31,11 @@ def scalable(file_name=None, function_name=None, recover=None, omega=None, r=2, 
 
     # User Interface
     if file_name is None:
-        file_name = raw_input("Please input the file_name of the data: \n")
+        file_name = input("Please input the file_name of the data: \n")
         print("\n")
 
     if function_name is None:
-        function_name = raw_input("Please choose the method you want to use to recover data(Input one number):\n"
+        function_name = input("Please choose the method you want to use to recover data(Input one number):\n"
                                   " 1. Distributed CP(ALS)  2.Distributed CP(ADMM) 3. DisTenC  0.Exit \n")
         print("\n")
     #if recover is None:
@@ -120,7 +120,7 @@ def scalable(file_name=None, function_name=None, recover=None, omega=None, r=2, 
             ######
 
         elif function_name == '0':
-            print 'Successfully Exit'
+            print('Successfully Exit')
             return None, None, None, None
         else:
             raise ValueError('No Such Method')
@@ -136,16 +136,16 @@ def scalable(file_name=None, function_name=None, recover=None, omega=None, r=2, 
             newfilename = file_name[:-4] + '_Decomposite' + file_name[-4:]
             #print "\n" + "The original Tensor is: "
             #print X1
-            print "\n" + "The Decomposed Result is: "
-            print Final
+            print("\n" + "The Decomposed Result is: ")
+            print(Final)
     else:
         newsubs = Rec.tosptensor().subs
         tempvals = Rec.tosptensor().vals
         newfilename = file_name[:-4] + '_Recover' + file_name[-4:]
         #print "\n" + "The original Tensor is: "
         #print Ori
-        print "\n" + "The Recovered Tensor is: "
-        print Rec.data
+        print("\n" + "The Recovered Tensor is: ")
+        print(Rec.data)
 
     # Return result
     return Ori, full, Final, Rec

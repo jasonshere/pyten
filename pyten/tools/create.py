@@ -66,7 +66,7 @@ def create(problem='basic', siz=None, r=2, miss=0, tp='CP', aux=None, timestep=5
             for k in range(dims):
                 S[:, :, k] = np.random.rand(r[0])
             V = np.random.rand(share_mode_size, r[0])
-            sol = range(dims)
+            sol = list(range(dims))
             for k in range(dims):
                 sol[k] = U[k].dot(H).dot(S[:, :, k]).dot(V.T)
         else:
@@ -80,7 +80,7 @@ def create(problem='basic', siz=None, r=2, miss=0, tp='CP', aux=None, timestep=5
                 # Solution Decomposition Matrices
                 tmp = []
                 for n in range(dims):
-                    tmp.append(np.array([range(1, siz[n] + 1), np.ones(siz[n])]).T)
+                    tmp.append(np.array([list(range(1, siz[n] + 1)), np.ones(siz[n])]).T)
                 u = [np.dot(tmp[n], epsilon[n].T) for n in range(dims)]
             else:
                 # Solution Decomposition Matrices

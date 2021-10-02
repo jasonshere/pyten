@@ -14,7 +14,7 @@ def helios(scenario=None):
 
     # User Interface
     if scenario is None:
-        scenario = raw_input("Please choose the scenario:\n"
+        scenario = input("Please choose the scenario:\n"
                              " 1. Basic Tensor Decomposition/Completion  2.Tensor Decompostion/Completion with Auxiliary Information"
                              " 3.Dynamic Tensor Decomposition/Completion 4.Scalable Tensor Decomposition/Completion 0.Exit \n")
 
@@ -27,7 +27,7 @@ def helios(scenario=None):
     elif scenario == '4':  # Dynamic Tensor Decomposition
         [Ori, full, Final, Rec] = pyten.UI.scalable()
     elif scenario == '0':
-        print 'Successfully Exit'
+        print('Successfully Exit')
         return Ori, full, Final, Rec
     else:
         raise ValueError('No Such scenario')

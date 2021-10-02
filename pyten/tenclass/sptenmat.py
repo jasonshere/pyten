@@ -39,8 +39,8 @@ class Sptenmat(object):
         else:
             raise ValueError("Sptenmat: incorrect specification of dimensions.")
 
-        if not (range(0, x.ndims) == sorted(np.append(rdim, cdim))):
-            print (range(0, x.ndims) == sorted(np.append(rdim, cdim)))
+        if not (list(range(0, x.ndims)) == sorted(np.append(rdim, cdim))):
+            print((list(range(0, x.ndims)) == sorted(np.append(rdim, cdim))))
             raise ValueError("Tenmat: second argument must be a list or an integer.")
 
         self.shape = x.shape

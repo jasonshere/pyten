@@ -11,8 +11,8 @@ def mttkrp(x, u, n):
 
     dim = x.ndims
     temp1 = [n]
-    temp2 = range(n)
-    temp3 = range(n + 1, dim)
+    temp2 = list(range(n))
+    temp3 = list(range(n + 1, dim))
     temp2.reverse()
     temp3.reverse()
     temp1[len(temp1):len(temp1)] = temp3

@@ -106,7 +106,7 @@ def tt_dimscehck(dims, n, m=None, exceptdims=False):
 
     # if exceptdims is true
     if exceptdims:
-        dims = listdiff(range(0, n), dims)
+        dims = listdiff(list(range(0, n)), dims)
 
     # check vals in between 0 and n-1
     for i in range(0, len(dims)):
@@ -235,4 +235,4 @@ def tt_sizecheck(size):
 if __name__ == '__main__':
     shape = (4, 4, 4)
     subs = [0, 0, 0]
-    print sub2ind(shape, subs)
+    print(sub2ind(shape, subs))

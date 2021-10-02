@@ -58,8 +58,8 @@ def halrtc(x, omega=None, alpha=None, beta=None, max_iter=100, epsilon=1e-5, pri
     x.data[omega == 0] = np.mean(x.data[omega == 1])
     errList = np.zeros([max_iter, 1])
 
-    Y = range(N)
-    M = range(N)
+    Y = list(range(N))
+    M = list(range(N))
 
     for i in range(N):
         Y[i] = x.data
@@ -71,7 +71,7 @@ def halrtc(x, omega=None, alpha=None, beta=None, max_iter=100, epsilon=1e-5, pri
     for k in range(max_iter):
 
         if (k + 1) % printitn == 0 and k != 0 and printitn != max_iter:
-            print 'HaLRTC: iterations = {0}  difference = {1}\n'.format(k, errList[k - 1])
+            print('HaLRTC: iterations = {0}  difference = {1}\n'.format(k, errList[k - 1]))
 
         beta = beta * 1.05
 
@@ -107,5 +107,5 @@ def halrtc(x, omega=None, alpha=None, beta=None, max_iter=100, epsilon=1e-5, pri
             break
 
 
-    print 'HaLRTC ends: total iterations = {0}   difference = {1}\n\n'.format(k + 1, errList[k])
+    print('HaLRTC ends: total iterations = {0}   difference = {1}\n\n'.format(k + 1, errList[k]))
     return x

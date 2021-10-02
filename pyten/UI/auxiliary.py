@@ -33,7 +33,7 @@ def auxiliary(file_name=None, function_name=None, aux_mode=None, aux_file=None, 
 
     # User Interface
     if file_name is None:
-        file_name = raw_input("Please input the file_name of the Tensor data:\n")
+        file_name = input("Please input the file_name of the Tensor data:\n")
         print("\n")
 
     # Use pandas package to load data
@@ -43,7 +43,7 @@ def auxiliary(file_name=None, function_name=None, aux_mode=None, aux_file=None, 
     # First: create Sptensor
     dat = dat1.values
     sha = dat.shape
-    subs = dat[:, range(sha[1] - 1)]
+    subs = dat[:, list(range(sha[1] - 1))]
     subs = subs - 1
     vals = dat[:, sha[1] - 1]
     vals = vals.reshape(len(vals), 1)
@@ -58,20 +58,20 @@ def auxiliary(file_name=None, function_name=None, aux_mode=None, aux_file=None, 
     X.data = np.nan_to_num(X.data)
 
     if function_name is None:
-        function_name = raw_input("Please choose the method you want to use to recover data(Input one number):\n"
+        function_name = input("Please choose the method you want to use to recover data(Input one number):\n"
                                   " 1. AirCP  2.CMTF 0.Exit \n")
         print("\n")
 
     if function_name == '1' or function_name == 'AirCP':
         simMats = np.array([np.identity(X.shape[i]) for i in range(X.ndims)])
         if aux_mode is None:
-            aux_mode = raw_input(
+            aux_mode = input(
                 "Please input all the modes that have Auxiliary Similarity Matrix "
                 "(separate with space. Input 'None' if no auxiliary info.)\n")
             if aux_mode != 'None':
                 for i in range((len(aux_mode) + 1) / 2):
                     Mode = int(aux_mode[i * 2])
-                    FileName2 = raw_input(
+                    FileName2 = input(
                         "Please input the file_name of the Auxiliary Similarity Matrix of Mode " + str(Mode) + " :\n")
                     if FileName2 != 'None':
                         dat2 = pd.read_csv(FileName2, delimiter=';', header=None)
@@ -99,19 +99,19 @@ def auxiliary(file_name=None, function_name=None, aux_mode=None, aux_file=None, 
         CM = None
         Y = None
         if aux_mode is None:
-            aux_mode = raw_input(
+            aux_mode = input(
                 "Please input all the modes that have Coupled Matrix (separate with space. "
                 "Input 'None' if no coupled matrices. Allow Multiple Coupled Matrices for One Mode)\n")
             if aux_mode != 'None':
                 for i in range((len(aux_mode) + 1) / 2):
                     Mode = int(aux_mode[i * 2])
-                    FileName2 = raw_input("Please input the file_name of the Coupled Matrix of Mode " + str(
+                    FileName2 = input("Please input the file_name of the Coupled Matrix of Mode " + str(
                         Mode) + " (Input 'None' if no auxiliary info):\n")
                     print("\n")
                     if FileName2 != 'None':
                         dat2 = pd.read_csv(FileName2, delimiter=';')
                         Mat_dat = dat2.values
-                        Mat_subs = Mat_dat[:, range(2)]
+                        Mat_subs = Mat_dat[:, list(range(2))]
                         Mat_subs = Mat_subs - 1
                         Mat_vals = Mat_dat[:, 2]
                         Mat_siz = np.max(Mat_subs, 0)
@@ -132,7 +132,7 @@ def auxiliary(file_name=None, function_name=None, aux_mode=None, aux_file=None, 
                 if FileName2 != 'None':
                     dat2 = pd.read_csv(FileName2, delimiter=';')
                     Mat_dat = dat2.values
-                    Mat_subs = Mat_dat[:, range(2)]
+                    Mat_subs = Mat_dat[:, list(range(2))]
                     Mat_subs = Mat_subs - 1
                     Mat_vals = Mat_dat[:, 2]
                     Mat_siz = np.max(Mat_subs, 0)
@@ -147,13 +147,13 @@ def auxiliary(file_name=None, function_name=None, aux_mode=None, aux_file=None, 
                         Y = [Y, X2.toarray()]
 
     elif function_name == '0':
-        print 'Successfully Exit'
+        print('Successfully Exit')
         return None, None, None, None
     else:
         raise ValueError('No Such Method')
 
     if recover is None:
-        recover = raw_input("If there are missing values in the file? (Input one number)\n 1. Yes, recover it  "
+        recover = input("If there are missing values in the file? (Input one number)\n 1. Yes, recover it  "
                             "2.No, just decompose (Missing entries in the original tensor will be replaced by 0) 0.Exit\n")
 
     # Construct omega
@@ -181,7 +181,7 @@ def auxiliary(file_name=None, function_name=None, aux_mode=None, aux_file=None, 
             full = Final.totensor()
 
         elif function_name == '0':
-            print 'Successfully Exit'
+            print('Successfully Exit')
             return None, None, None, None
         else:
             raise ValueError('No Such Method')
@@ -195,23 +195,23 @@ def auxiliary(file_name=None, function_name=None, aux_mode=None, aux_file=None, 
         newsubs = full.tosptensor().subs
         tempvals = full.tosptensor().vals
         newfilename = file_name[:-4] + '_Decomposite' + file_name[-4:]
-        print "\n" + "The original Tensor is: "
-        print Ori
-        print "\n" + "The Decomposed Result is: "
-        print Final
+        print("\n" + "The original Tensor is: ")
+        print(Ori)
+        print("\n" + "The Decomposed Result is: ")
+        print(Final)
     else:
         newsubs = Rec.tosptensor().subs
         tempvals = Rec.tosptensor().vals
         newfilename = file_name[:-4] + '_Recover' + file_name[-4:]
-        print "\n" + "The original Tensor is: "
-        print Ori
-        print "\n" + "The Recovered Tensor is: "
-        print Rec.data
+        print("\n" + "The original Tensor is: ")
+        print(Ori)
+        print("\n" + "The Recovered Tensor is: ")
+        print(Rec.data)
 
     # Reconstruct
     df = dat1
     for i in range(nv):
-        pos = map(sum, newsubs == subs[i])
+        pos = list(map(sum, newsubs == subs[i]))
         idx = pos.index(nd)
         temp = tempvals[idx]
         df.iloc[i, nd] = temp[0]

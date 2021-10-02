@@ -31,24 +31,24 @@ def dynamic(file_name=None, function_name=None, fore__file=None, save__file=None
     """
 
     if file_name is None:
-        file_name = raw_input("Please input the file_name of the data:\n")
+        file_name = input("Please input the file_name of the data:\n")
         print("\n")
 
     if function_name is None:
-        function_name = raw_input("Please choose the method you want to use (Input one number):\n"
+        function_name = input("Please choose the method you want to use (Input one number):\n"
                                   " 1. onlineCP(only for decomposition)  2.OLSGD 3.MAST 0.Exit \n")
         print("\n")
 
     Former_result = '2'
     if self is None and fore__file is None:
-        Former_result = raw_input("If there are former decomposition or recovery result (.npy file):\n"
+        Former_result = input("If there are former decomposition or recovery result (.npy file):\n"
                                   " 1. Yes  2.No 0.Exit \n")
         if Former_result == '1':
-            fore__file = raw_input("Please input the file_name of the former result:\n")
+            fore__file = input("Please input the file_name of the former result:\n")
             temp = np.load(fore__file)
             self = temp.all()
         elif Former_result == '0':
-            print 'Successfully Exit'
+            print('Successfully Exit')
             return None, None, None, None
 
     elif self is None:
@@ -60,7 +60,7 @@ def dynamic(file_name=None, function_name=None, fore__file=None, save__file=None
         if function_name == '1':
             recover = '2'
         else:
-            recover = raw_input("If there are missing values in the file? (Input one number)\n"
+            recover = input("If there are missing values in the file? (Input one number)\n"
                                 "1. Yes, recover it  2.No, just decompose "
                                 "(Missing entries in the original tensor will be replaced by 0) 0.Exit\n")
 
@@ -71,7 +71,7 @@ def dynamic(file_name=None, function_name=None, fore__file=None, save__file=None
     # First: create Sptensor
     dat = dat1.values
     sha = dat.shape
-    subs = dat[:, range(sha[1] - 1)]
+    subs = dat[:, list(range(sha[1] - 1))]
     subs -= 1
     vals = dat[:, sha[1] - 1]
     vals = vals.reshape(len(vals), 1)
@@ -184,23 +184,23 @@ def dynamic(file_name=None, function_name=None, fore__file=None, save__file=None
         newsubs = full.tosptensor().subs
         tempvals = full.tosptensor().vals
         newfilename = file_name[:-4] + '_Decomposite' + file_name[-4:]
-        print "\n" + "The original Tensor is: "
-        print Ori
-        print "\n" + "The Decomposed Result is: "
-        print Final
+        print("\n" + "The original Tensor is: ")
+        print(Ori)
+        print("\n" + "The Decomposed Result is: ")
+        print(Final)
     else:
         newsubs = Rec.tosptensor().subs
         tempvals = Rec.tosptensor().vals
         newfilename = file_name[:-4] + '_Recover' + file_name[-4:]
-        print "\n" + "The original Tensor is: "
-        print Ori
-        print "\n" + "The Recovered Tensor is: "
-        print Rec.data
+        print("\n" + "The original Tensor is: ")
+        print(Ori)
+        print("\n" + "The Recovered Tensor is: ")
+        print(Rec.data)
 
     # Reconstruct
     df = dat1
     for i in range(nv):
-        pos = map(sum, newsubs == subs[i])
+        pos = list(map(sum, newsubs == subs[i]))
         idx = pos.index(nd)
         temp = tempvals[idx]
         df.iloc[i, nd] = temp[0]
@@ -208,10 +208,10 @@ def dynamic(file_name=None, function_name=None, fore__file=None, save__file=None
     df.to_csv(newfilename, sep=';', index=0)
 
     if save__file is None:
-        SaveOption = raw_input("If you want to save the result into .npy file):\n"
+        SaveOption = input("If you want to save the result into .npy file):\n"
                                " 1. Yes  2.No  0.Exit \n")
         if SaveOption == '1':
-            save__file = raw_input("Please input the address and fileName to save the result: (end in '.npy')\n")
+            save__file = input("Please input the address and fileName to save the result: (end in '.npy')\n")
             if function_name == '3' or function_name == 'MAST':
                 np.save(save__file, self1)
             else:

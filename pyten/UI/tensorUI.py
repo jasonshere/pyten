@@ -1,7 +1,7 @@
 import os
 from pyten.UI import basic, auxiliary, dynamic
-from Tkinter import *
-from tkFileDialog import askopenfilename
+from tkinter import *
+from tkinter.filedialog import askopenfilename
 
 
 class TensorUI:
@@ -103,18 +103,18 @@ class TensorUI:
         else:
             for i in self.auxlabels:
                 i.grid_forget()
-            for k, v in self.auxbentries.iteritems():
+            for k, v in self.auxbentries.items():
                 v.grid_forget()
             for i in self.auxmodes:
                 i.grid_forget()
-            for k, v in self.auxbbuttons.iteritems():
+            for k, v in self.auxbbuttons.items():
                 k.grid_forget()
             for i in self.auxabuttons:
                 i.grid_forget()
 
     # Event Handler for Submit Button
     def submitClick(self):
-        print self.auxFilesPath
+        print(self.auxFilesPath)
 
         if self.selectedScenario == self.scenarios[0]:
             value = '1'

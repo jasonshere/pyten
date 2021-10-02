@@ -26,7 +26,7 @@ class IndexAdjustK(object):
 
 class TensorEntry(object):
     def __init__(self, line):
-        if type(line) is unicode:
+        if type(line) is str:
             raw = re.split("[\s\t,]+", line.strip())
             if len(raw) != 4:
                 raw = re.split("[\s\t;]+", line.strip())

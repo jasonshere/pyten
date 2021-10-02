@@ -1,6 +1,6 @@
 import sys
 sys.path.append('/path/to/pyten/tenclass')
-import tensor, sptenmat
+from . import tensor, sptenmat
 import numpy as np
 import scipy as sp
 from pyten.tools import tools
@@ -80,7 +80,7 @@ class Sptensor(object):
             order = np.array(order)
 
         order = order - 1
-        if (self.ndims != len(order)) or (sorted(order) != range(0, self.ndims)):
+        if (self.ndims != len(order)) or (sorted(order) != list(range(0, self.ndims))):
             raise ValueError("Sptensor: invalid permute order.")
 
         newsubs = self.subs[:, order.tolist()]

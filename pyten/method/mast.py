@@ -67,10 +67,10 @@ class MAST(object):
         # Initialize latent matrices
         # CAs{1,:} old decomposition (=As), CAs{2,:} new part (randomly initialize)
         # Zs  with zeros and Ys with zeros.
-        self.CAs1 = range(self.N)
-        self.CAs2 = range(self.N)
-        self.Zs = range(self.N)
-        self.Ys = range(self.N)
+        self.CAs1 = list(range(self.N))
+        self.CAs2 = list(range(self.N))
+        self.Zs = list(range(self.N))
+        self.Ys = list(range(self.N))
         for i in range(self.N):
             self.CAs1[i] = self.As[i]
             self.CAs2[i] = np.random.random([self.Inc_size[i], self.rank])
@@ -110,7 +110,7 @@ class MAST(object):
 
             # Update CAs
             for n in range(self.N):
-                tempu = range(self.N)
+                tempu = list(range(self.N))
                 temp_d1 = 0
                 temp_d2 = 0
                 for j in range(1, 2 ** self.N):
@@ -129,8 +129,8 @@ class MAST(object):
 
                 # Core idea
                 had = np.array([])
-                index = range(n, self.N)
-                index[0:0] = range(n - 1)
+                index = list(range(n, self.N))
+                index[0:0] = list(range(n - 1))
                 for i in index:
                     if had.all():
                         had = np.dot(self.As[i].T, self.CAs1[i])
@@ -195,9 +195,9 @@ class MAST(object):
             self.pre_C = self.C.copy()
 
             if (k + 1) % self.printitn == 0:
-                print 'MAST: iterations={0}, difference={1}'.format(k + 1, self.errList[-1])
+                print('MAST: iterations={0}, difference={1}'.format(k + 1, self.errList[-1]))
             elif self.stopC < self.tol:
-                print 'MAST: iterations={0}, difference={1}'.format(k + 1, self.errList[-1])
+                print('MAST: iterations={0}, difference={1}'.format(k + 1, self.errList[-1]))
 
             if self.stopC < self.tol:
                 break
@@ -205,4 +205,4 @@ class MAST(object):
         for i in range(self.N):
             self.finalAs[i] = np.row_stack((self.CAs1[i], self.CAs2[i]))
 
-        print 'MAST: iterations={0}, difference={1}'.format(k + 1, self.errList[-1])
+        print('MAST: iterations={0}, difference={1}'.format(k + 1, self.errList[-1]))

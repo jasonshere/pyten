@@ -15,13 +15,13 @@ deps_list = []
 
 def deps_install():
     for package in deps_list:
-        print("[DEPENDENCY] Installing %s" % package)
+        print(("[DEPENDENCY] Installing %s" % package))
         try:
             pip.main(['install', '--no-binary', ':all:', '--upgrade', package])
         except Exception as e:
-            print("[Error] Unable to install %s using pip. \
+            print(("[Error] Unable to install %s using pip. \
                   Please read the instructions for \
-                  manual installation.. Exiting" % package)
+                  manual installation.. Exiting" % package))
             exit(2)
 
 class pyten_install(install):
